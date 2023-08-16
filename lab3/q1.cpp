@@ -8,10 +8,6 @@ class Queue{
         int size = 0;
 
     public:
-        
-
-        
-
         void enqueue(int a){
             for (int i = 0;i<size;i++){
                 int k = s1.top();
@@ -37,6 +33,14 @@ class Queue{
         bool empty(){
             if (size ==0) return true;
             else return false;
+        }
+
+        int front(){
+            if (size == 0)  return -1;
+            else{
+                int k = s1.top();
+                return k;
+            }
         }
 
 };

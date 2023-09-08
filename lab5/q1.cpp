@@ -1,5 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -11,23 +9,64 @@ using namespace std;
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-class TreeNode;
+
+
+// REMOVE BELOW 2 LINES BEFORE SUBMITTING
+#include <bits/stdc++.h>
+using namespace std;
+class TreeNode{
+    public:
+        TreeNode(int a);
+        TreeNode(int a, TreeNode* p1,TreeNode* p2);
+};
+// TILL HERE
+
 
 class Solution {
 public:
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        vector <int> a = preorder;
-        vector <int> b = inorder;
-        int p = a[0];
-        int c = 0;
-        for (int i = 0;i<b.size();i++){
-            if (b[i] == p) c = i; 
+        int a = preorder[0];
+    	
+        preorder.erase(preorder.begin());
+        vector <int> l;
+        vector <int> r;
+        bool b = true;
+        for (int i = 0;i<inorder.size();i++){
+        	if (inorder[i]==a) b = false;
+        	else if (b) l.push_back(inorder[i]);
+        	else r.push_back(inorder[i]);
         }
-        vector <int> a2;
-        vector <int> b2;
-        for (int i = 0;i<c;i++){
-            b2.push_back(b[i]);
+        vector <int> l1;
+        vector <int> r1;
+        for (int i = 0;i<l.size();i++){
+        	l1.push_back(preorder[i]);
+        }
+        for (int i = l.size();i<preorder.size();i++){
+        	r1.push_back(preorder[i]);
         }
         
-    }
+        
+        if (l1.size()==0 || r1.size()==0){
+        	if (l1.size()==0 & r1.size() == 0){
+        		TreeNode* T = new TreeNode(a);
+        		return T;
+        	}
+        	else if (l1.size()==0 & r1.size() != 0){
+        		TreeNode* T = new TreeNode(a,nullptr,buildTree(r1,r));
+        		return T;
+        	}
+        	else{
+        		TreeNode* T = new TreeNode(a,buildTree(l1,l),nullptr);
+        		return T;
+        	}
+        	
+        }
+        else{
+        	TreeNode* T = new TreeNode(a,buildTree(l1,l),buildTree(r1,r));
+        	return T;
+        }
+        	
+        }
+        
+    
 };

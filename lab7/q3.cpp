@@ -11,10 +11,16 @@ struct ListNode {
     ListNode(int x, ListNode *next) : val(x), next(next) {}
 }; 
 
-void reverse(ListNode* n){
-    if (n->next != NULL){
-        reverse(n->next);
-        n->next->next = n;
+ListNode* reverse(ListNode* n){
+    if (n->next == NULL || n == NULL){
+        return n;
+    }
+    
+    else{
+    	 ListNode* right = reverse(n->next);
+    	 n->next->next = n;
+    	 n->next = NULL;
+    	 return right;
     }
 }
 
@@ -25,7 +31,7 @@ public:
         ListNode* l = head;
         ListNode* m = head;
         int size = 0;
-        while (f != NULL){
+        while (l != NULL){
             size++;
             l = l->next;
         }
@@ -33,7 +39,7 @@ public:
         for (int i=0;i<(size/2);i++){
             m = m->next;
         }
-        reverse(m);
+        ListNode* p  = reverse(m);
 
         bool valid = true;
         for (int i=0;i<size/2;i++){

@@ -81,12 +81,3 @@ vector<int> minHeap(int n, vector<vector<int>>& q) {
 }
 
 
-int main(){
-    vector <vector <int>> v  = {{0,5},{1},{0,43},{0,15},{0,5}};
-    vector <int> a = minHeap(v.size(),v);
-    for (int i:a){
-        cout<<i<<" ";
-    }
-    cout<<endl;
-
-}

@@ -1,76 +1,78 @@
 // C++ program for Merge Sort
 #include <bits/stdc++.h>
 using namespace std;
-int c;
-// Merges two subarrays of array[].
-// First subarray is arr[begin..mid]
-// Second subarray is arr[mid+1..end]
-void merge(int array[], int const left, int const mid,
-		int const right)
-{
-	int const subArrayOne = mid - left + 1;
-	int const subArrayTwo = right - mid;
+int c = 0;
 
-	// Create temp arrays
-	auto *leftArray = new int[subArrayOne],
-		*rightArray = new int[subArrayTwo];
+// Merge two subarrays L and M into arr
+void merge(int arr[], int p, int q, int r) {
+  
+  // Create L ← A[p..q] and M ← A[q+1..r]
+  int n1 = q - p + 1;
+  int n2 = r - q;
 
-	// Copy data to temp arrays leftArray[] and rightArray[]
-	for (auto i = 0; i < subArrayOne; i++)
-		leftArray[i] = array[left + i];
-	for (auto j = 0; j < subArrayTwo; j++)
-		rightArray[j] = array[mid + 1 + j];
+  int L[n1], M[n2];
 
-	auto indexOfSubArrayOne = 0, indexOfSubArrayTwo = 0;
-	int indexOfMergedArray = left;
+  for (int i = 0; i < n1; i++)
+    L[i] = arr[p + i];
+  for (int j = 0; j < n2; j++)  
+    M[j] = arr[q + 1 + j];
 
-	// Merge the temp arrays back into array[left..right]
-	while (indexOfSubArrayOne < subArrayOne && indexOfSubArrayTwo < subArrayTwo) {
-		if (leftArray[indexOfSubArrayOne] <= rightArray[indexOfSubArrayTwo]) {
-			array[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
-			indexOfSubArrayOne++;
-		}
-		else {
-            if (leftArray[indexOfSubArrayOne]>2*rightArray[indexOfSubArrayTwo]){
-                cout<<leftArray[indexOfSubArrayOne]<<"  "<<rightArray[indexOfSubArrayTwo]<<endl;;
-                c++;
-            }
-			array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
-			indexOfSubArrayTwo++;
-		}
-		indexOfMergedArray++;
-	}
+  // Maintain current index of sub-arrays and main array
+  int i, j, k;
+  i = 0;
+  j = 0;
+  k = p;
 
-	// Copy the remaining elements of
-	// left[], if there are any
-	while (indexOfSubArrayOne < subArrayOne) {
-		array[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
-		indexOfSubArrayOne++;
-		indexOfMergedArray++;
-	}
+  // Until we reach either end of either L or M, pick larger among
+  // elements L and M and place them in the correct position at A[p..r]
+  while (i < n1 && j < n2) {
+    if (L[i] <= M[j]) {
+        cout<<L[i]<<"  "<<M[j]<<endl;
+      arr[k] = L[i];
+      i++;
+    } else {
+      arr[k] = M[j];
+      if (L[i]>2*M[j]){
+        c++;
+        cout<<"**";
+      }
+      cout<<L[i]<<"  "<<M[j]<<endl;
+      j++;
+    }
+    k++;
+  }
 
-	// Copy the remaining elements of
-	// right[], if there are any
-	while (indexOfSubArrayTwo < subArrayTwo) {
-		array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
-		indexOfSubArrayTwo++;
-		indexOfMergedArray++;
-	}
-	delete[] leftArray;
-	delete[] rightArray;
+  // When we run out of elements in either L or M,
+  // pick up the remaining elements and put in A[p..r]
+  while (i < n1) {
+    arr[k] = L[i];
+    i++;
+    k++;
+  }
+
+  while (j < n2) {
+    arr[k] = M[j];
+    j++;
+    k++;
+  }
 }
 
-// begin is for left index and end is right index
-// of the sub-array of arr to be sorted
-void mergeSort(int array[], int const begin, int const end)
-{
-	if (begin >= end)
-		return;
+// Divide the array into two subarrays, sort them and merge them
+void mergeSort(int arr[], int l, int r) {
+  if (l < r) {
+    // m is the point where the array is divided into two subarrays
+    int m = l + (r - l) / 2;
 
-	int mid = begin + (end - begin) / 2;
-	mergeSort(array, begin, mid);
-	mergeSort(array, mid + 1, end);
-	merge(array, begin, mid, end);
+    mergeSort(arr, l, m);
+    mergeSort(arr, m + 1, r);
+
+    // Merge the sorted subarrays
+    merge(arr, l, m, r);
+  }
+}
+
+void printaa(int a[],int s){
+    
 }
 
 class Solution {
@@ -82,7 +84,6 @@ public:
             a[i] = nums[i];
         }
         mergeSort(a,0,s-1);
-        return c;
     }
 };
 
@@ -91,5 +92,4 @@ int main(){
     int a[] = {1,3,2,3,1};
     mergeSort(a,0,4);
     cout<<c<<endl;
-
 }

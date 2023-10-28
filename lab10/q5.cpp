@@ -1,5 +1,6 @@
 #include <iostream>
 using namespace std;
+#include<algorithm>
 #include <vector>
 #include <stack>
 
@@ -30,6 +31,7 @@ class Graph{
         }
 
         void addedge(int v1,int v2){
+            // cout<<"added edge "<<v1<<" "<<v2<<endl;
             adjlist[v1].push_back(v2);
         }
 
@@ -89,41 +91,40 @@ void Graph::SCC(){
     }
 }
 
-void hehe(){
-    vector <int> a;
-    cout<<a[0]<<endl;
-    cout<<"hello"<<endl;
+
+void solve(){
+    int n;
+    cin>>n;
+    Graph* g = new Graph(n);
+    for (int i=0;i<n;i++){
+        int b;
+        cin>>b;
+        g->addedge(i,(i+b+1)%n);
+    }
+    g->SCC();
+    vector <vector <int>> v = g->sccs;
+    int c=0;
+    for (int i=0;i<v.size();i++){
+        if (v[i].size()>1){
+            c+=v[i].size();
+        }
+        else{
+            int id = v[i][0];
+            if (count(g->adjlist[id].begin(),g->adjlist[id].end(),id)){
+                c++;
+            }
+        }
+    }
+    cout<<c<<endl;
 }
 
 
 
-class Solution {
-public:
-    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-        int V = numCourses;
-        Graph* g = new Graph(V);
-        for (vector <int> v:prerequisites){
-            if (v[1]==v[0]){
-                return false;
-            }
-            g->addedge(v[1],v[0]);
-        }
-        g->SCC();
-        vector <vector <int>> s = g->sccs;
-        for (vector<int> v:s){
-            if (v.size()>1){
-                return false;
-            }
-        }
-        return true;
-
+int main() {
+	int t;
+    cin>>t;
+    while(t--){
+        solve();
     }
-};
-
-int main(){
-    vector <int> a;
-    cout<<"hello"<<endl;
-    hehe();
-
-    return 0;
+	return 0;
 }
